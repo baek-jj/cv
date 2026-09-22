@@ -1,0 +1,323 @@
+/* ============================================================
+   Academic personal site — minimal, typography-first
+   색/폭/폰트는 아래 :root 값만 바꾸면 전체가 따라옵니다.
+   ============================================================ */
+
+:root {
+  --bg:        #fdfdfc;
+  --surface:   #f4f3f0;
+  --text:      #1b1b19;
+  --muted:     #6b6a66;
+  --line:      #e2e0db;
+  --accent:    #1f5c9e;   /* 링크·포인트 색. 여기만 바꿔도 분위기가 달라집니다 */
+  --accent-bg: #e9f0f8;
+
+  --measure:   44rem;     /* 본문 최대 폭 — 글이 눈으로 쫓기 좋은 길이 */
+  --gutter:    1.5rem;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard",
+          "Apple SD Gothic Neo", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+           "Times New Roman", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #14141a;
+    --surface:   #1e1e26;
+    --text:      #e8e7e3;
+    --muted:     #9b9a95;
+    --line:      #2e2e38;
+    --accent:    #86b7e8;
+    --accent-bg: #1c2a3a;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ---------- Top bar ------------------------------------------------ */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar nav {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0.75rem var(--gutter);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.topbar__name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.topbar__links {
+  display: flex;
+  gap: 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.topbar__links a { color: var(--muted); }
+.topbar__links a:hover { color: var(--accent); }
+
+/* ---------- Layout ------------------------------------------------- */
+
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section { padding: 3rem 0 0; }
+.section + .section { border-top: 1px solid var(--line); margin-top: 3rem; }
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.25; }
+
+h2 {
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+h2.mt { margin-top: 3rem; }
+
+.subhead {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 2rem 0 0.75rem;
+}
+
+.section__note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: -0.75rem 0 1.75rem;
+}
+
+/* ---------- Hero --------------------------------------------------- */
+
+.hero {
+  display: flex;
+  gap: 1.75rem;
+  align-items: flex-start;
+  padding: 4rem 0 0;
+}
+
+.hero__photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.hero__text { min-width: 0; }
+
+.hero h1 {
+  font-size: clamp(1.9rem, 5vw, 2.4rem);
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.015em;
+}
+
+.hero__role {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.hero__pitch { margin: 0 0 1.5rem; font-size: 1.05rem; }
+.hero__pitch strong { font-weight: 600; }
+
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.hero__links a {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+}
+.hero__links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ---------- Tags --------------------------------------------------- */
+
+.taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.taglist li {
+  font-size: 0.85rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+}
+
+/* ---------- Publications ------------------------------------------- */
+
+.year {
+  font-size: 0.85rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 2rem 0 0.9rem;
+}
+.year:first-of-type { margin-top: 0; }
+
+.pubs { list-style: none; margin: 0; padding: 0; }
+
+.pub {
+  padding: 0 0 0 1rem;
+  margin: 0 0 1.5rem;
+  border-left: 2px solid transparent;
+}
+.pub:last-child { margin-bottom: 0; }
+
+.pub--selected { border-left-color: var(--accent); }
+
+.marker {
+  display: inline-block;
+  width: 2px;
+  height: 0.8em;
+  background: var(--accent);
+  vertical-align: -1px;
+  margin-right: 0.35em;
+}
+
+.pub__title {
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.pub__authors { margin: 0; font-size: 0.9rem; color: var(--muted); }
+.pub__authors strong { color: var(--text); font-weight: 600; }
+.pub__venue { margin: 0.1rem 0 0.45rem; font-size: 0.9rem; color: var(--muted); }
+
+.pub__links { margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.8rem; }
+.pub__links a { letter-spacing: 0.02em; }
+
+/* ---------- Timeline ----------------------------------------------- */
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0 0 1.1rem;
+}
+.timeline__when {
+  flex: none;
+  width: 8.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.15rem;
+}
+.timeline__what { min-width: 0; }
+.timeline__desc { display: block; font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- Cards -------------------------------------------------- */
+
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.85rem;
+}
+.card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  background: var(--bg);
+}
+.card h3 { margin: 0 0 0.35rem; font-size: 1rem; font-family: var(--sans); }
+.card p { margin: 0; font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- Footer ------------------------------------------------- */
+
+.footer {
+  max-width: var(--measure);
+  margin: 4rem auto 0;
+  padding: 0 var(--gutter) 3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.footer__inner { border-top: 1px solid var(--line); padding-top: 1.75rem; }
+.footer p { margin: 0 0 0.3rem; }
+.footer__meta { font-size: 0.8rem; }
+
+/* ---------- Mobile ------------------------------------------------- */
+
+@media (max-width: 40rem) {
+  .hero { flex-direction: column; gap: 1.25rem; padding-top: 2.5rem; }
+  .hero__photo { width: 84px; height: 84px; }
+  .timeline li { flex-direction: column; gap: 0.15rem; }
+  .timeline__when { width: auto; padding-top: 0; }
+  .topbar nav { gap: 0.5rem; }
+  .topbar__links { gap: 0.9rem; font-size: 0.82rem; }
+}
+
+/* ---------- Print (페이지를 그대로 인쇄하면 CV처럼 나옵니다) -------- */
+
+@media print {
+  :root { --bg: #fff; --text: #000; --muted: #444; --line: #ccc; --accent: #000; }
+  .topbar { display: none; }
+  main { max-width: none; }
+  .section { padding-top: 1.25rem; }
+  .section + .section { margin-top: 1.25rem; }
+  a { text-decoration: underline; }
+  .card { break-inside: avoid; }
+  .pub { break-inside: avoid; }
+}
