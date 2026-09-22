@@ -7,7 +7,6 @@ index.html      내용 (여기를 고칩니다)
 styles.css      디자인 (색/폭은 맨 위 :root 변수만)
 assets/
   photo.jpg     프로필 사진 (선택)
-  cv.pdf        CV PDF (선택)
 ```
 
 ## 1. 내용 채우기
@@ -19,7 +18,6 @@ assets/
 | `Jongjin Baek` | 본인 이름 (5군데: title, meta, topbar, h1, 논문 저자) |
 | `XXX` / `YYY` / `AAA` | 전공, 소속, 연구 주제 |
 | `#` 링크 | 실제 PDF / arXiv / DOI / GitHub URL |
-| `assets/cv.pdf` | CV PDF를 `assets/` 에 넣거나, 없으면 해당 링크 삭제 |
 
 안 쓰는 섹션(Teaching, Awards, Projects…)은 `<section>` 또는 `<h2>` 블록을 통째로 지우고, 상단 `topbar__links`의 해당 링크도 같이 지우면 됩니다.
 
