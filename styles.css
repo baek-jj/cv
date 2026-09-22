@@ -12,6 +12,16 @@
   --accent:    #1f5c9e;   /* 링크·포인트 색. 여기만 바꿔도 분위기가 달라집니다 */
   --accent-bg: #e9f0f8;
 
+  /* 이름 옆 회전 AI 칩 (기판 / 인터포저 / 컴퓨트 다이 / HBM) */
+  --chip-sub:     #1f4f42;  /* 패키지 기판 (녹색 PCB) */
+  --chip-subside: #163a30;
+  --chip-interp:  #4b4e58;  /* 실리콘 인터포저 */
+  --chip-hbm:     #262832;  /* HBM 스택 */
+  --chip-hbm2:    #3b3e4a;
+  --chip-passive: #c9a44c;  /* 기판 위 작은 수동소자 */
+  --chip-ball:    #b9b9c2;
+  --chip-shadow:  rgba(0,0,0,.22);
+
   --measure:   44rem;     /* 본문 최대 폭 — 글이 눈으로 쫓기 좋은 길이 */
   --gutter:    1.5rem;
 
@@ -30,6 +40,15 @@
     --line:      #2e2e38;
     --accent:    #86b7e8;
     --accent-bg: #1c2a3a;
+
+    --chip-sub:     #24604f;
+    --chip-subside: #1a463a;
+    --chip-interp:  #5a5e6a;
+    --chip-hbm:     #2c2f3a;
+    --chip-hbm2:    #454957;
+    --chip-passive: #d4b25e;
+    --chip-ball:    #cfcfd6;
+    --chip-shadow:  rgba(0,0,0,.6);
   }
 }
 
@@ -148,6 +167,9 @@ h2.mt { margin-top: 3rem; }
 .hero__text { min-width: 0; }
 
 .hero h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: clamp(1.9rem, 5vw, 2.4rem);
   margin: 0 0 0.4rem;
   letter-spacing: -0.015em;
@@ -183,6 +205,135 @@ h2.mt { margin-top: 3rem; }
   border-color: var(--accent);
   color: var(--accent);
   text-decoration: none;
+}
+
+
+/* ---------- Spinning AI chip (이름 옆 장식) ---------------------- */
+/* 순수 CSS 3D. 60px 정사각 안에 48px 기판, 그 위에 인터포저 + 컴퓨트 다이 + HBM 4개.
+   빼려면 index.html 의 <span class="chip"> 블록만 지우면 됩니다. */
+
+.chip {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  flex: none;
+  perspective: 340px;
+}
+.chip::before {                         /* 바닥 그림자 (회전하지 않음) */
+  content: "";
+  position: absolute;
+  left: 5px; right: 5px; bottom: 0;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, var(--chip-shadow), transparent 70%);
+}
+
+.chip__spin {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: chip-spin 18s linear infinite;
+}
+@keyframes chip-spin {
+  from { transform: rotateX(-36deg) rotateY(0deg); }
+  to   { transform: rotateX(-36deg) rotateY(360deg); }
+}
+
+.chip__bottom, .chip__sub, .chip__interposer, .chip__die, .chip__hbm {
+  position: absolute;
+  inset: 0;
+  backface-visibility: visible;
+}
+
+/* 기판 윗면: 녹색 PCB + 모서리 근처 수동소자 몇 개 */
+.chip__sub { transform: rotateX(90deg) translateZ(2px); }
+.chip__sub::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 2px;
+  background:
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 3px 4px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 3px 8px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 41px 4px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 41px 8px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 3px 42px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 41px 42px / 4px 2px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 20px 2px / 2px 3px no-repeat,
+    linear-gradient(var(--chip-passive), var(--chip-passive)) 26px 2px / 2px 3px no-repeat,
+    var(--chip-sub);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+/* 실리콘 인터포저: 40 × 28 */
+.chip__interposer { transform: rotateX(90deg) translateZ(2.6px); }
+.chip__interposer::before {
+  content: "";
+  position: absolute;
+  left: 10px; top: 16px;
+  width: 40px; height: 28px;
+  border-radius: 1px;
+  background: var(--chip-interp);
+  box-shadow: 0 0 2px rgba(0,0,0,.5);
+}
+
+/* 컴퓨트 다이: 가운데 16 × 22, 포인트색 + 타일 격자 */
+.chip__die { transform: rotateX(90deg) translateZ(4px); }
+.chip__die::before {
+  content: "";
+  position: absolute;
+  left: 22px; top: 19px;
+  width: 16px; height: 22px;
+  border-radius: 1px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(255,255,255,.16) 0 1px, transparent 1px 4px),
+    var(--accent);
+  box-shadow: 0 0 3px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.18);
+}
+
+/* HBM 스택 4개: 다이 양옆 8 × 12, 층 무늬. 다이보다 살짝 높게. */
+.chip__hbm { transform: rotateX(90deg) translateZ(4.8px); }
+.chip__hbm::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(180deg, var(--chip-hbm) 0 2px, var(--chip-hbm2) 2px 3px) 12px 17px / 8px 12px no-repeat,
+    repeating-linear-gradient(180deg, var(--chip-hbm) 0 2px, var(--chip-hbm2) 2px 3px) 12px 31px / 8px 12px no-repeat,
+    repeating-linear-gradient(180deg, var(--chip-hbm) 0 2px, var(--chip-hbm2) 2px 3px) 40px 17px / 8px 12px no-repeat,
+    repeating-linear-gradient(180deg, var(--chip-hbm) 0 2px, var(--chip-hbm2) 2px 3px) 40px 31px / 8px 12px no-repeat;
+  filter: drop-shadow(0 0 1.5px rgba(0,0,0,.6));
+}
+
+/* 기판 바닥: BGA 볼 격자 */
+.chip__bottom { transform: rotateX(-90deg) translateZ(2px); }
+.chip__bottom::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 2px;
+  background:
+    radial-gradient(circle, var(--chip-ball) 0.7px, transparent 1.1px) 1.5px 1.5px / 3px 3px,
+    var(--chip-subside);
+}
+
+/* 기판 옆면 4개: 48 × 4 */
+.chip__side {
+  position: absolute;
+  left: 6px; top: 28px;
+  width: 48px; height: 4px;
+  background: var(--chip-subside);
+  backface-visibility: visible;
+}
+.chip__side--s { transform: translateZ(24px); }
+.chip__side--n { transform: rotateY(180deg) translateZ(24px); }
+.chip__side--e { transform: rotateY(90deg)  translateZ(24px); }
+.chip__side--w { transform: rotateY(-90deg) translateZ(24px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .chip__spin { animation: none; transform: rotateX(-36deg) rotateY(-30deg); }
 }
 
 /* ---------- Tags --------------------------------------------------- */
@@ -314,6 +465,7 @@ h2.mt { margin-top: 3rem; }
 @media print {
   :root { --bg: #fff; --text: #000; --muted: #444; --line: #ccc; --accent: #000; }
   .topbar { display: none; }
+  .chip { display: none; }
   main { max-width: none; }
   .section { padding-top: 1.25rem; }
   .section + .section { margin-top: 1.25rem; }
